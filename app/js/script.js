@@ -30,7 +30,7 @@ const leaveWelcomePage = (e) => {
     
     welcomePage.style.transform = "translateX(-100%)";
     welcomePage.addEventListener("transitionend", () => {welcomePage.style.display="none"})
-    if(categories.length !== 0) {
+    if(categories.length == 0 || categories.length !== 0) {
       itemsListPage.style.transform = "translateX(0)";
       itemsListPage.style.display = "flex";
     }
@@ -196,7 +196,6 @@ const displayCategory = () => {
 
             } else {
                 openElement();
-                
 
                 //const infoHeight = setHeightContainer.getBoundingClientRect().height;
                 categoryItem.style.height = `${infoHeight}px`;
