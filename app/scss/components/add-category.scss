@@ -7,7 +7,7 @@
   z-index: 90;
   max-width: 100%;
   min-height: 100vh;
-  overflow-y: auto;
+  overflow: scroll;
   //background-color: var(--white);
   padding: 2rem;
   display: flex;
@@ -16,6 +16,7 @@
   transition: transform 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95);
   background: url(/assets/Glassmorphism-Background.png);
   background-size: cover;
+  border: 2px solid red;
 
   &__greetings,
   &__title {
