@@ -28,7 +28,7 @@ console.log(infoHeight)
 // PAGE TRANSITION
 const leaveWelcomePage = (e) => {
     
-    welcomePage.style.transform = "translateX(-100%)";
+    welcomePage.style.transform = "translateX(-90%)";
     welcomePage.addEventListener("transitionend", () => {welcomePage.style.display="none"})
     if(categories.length == 0 || categories.length !== 0) {
       itemsListPage.style.transform = "translateX(0)";
