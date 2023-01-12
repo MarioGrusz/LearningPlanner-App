@@ -1,0 +1,248 @@
+@use "../util" as *;
+
+.items-container {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  width: 100%;
+  min-height: 100vh;
+  overflow: scroll;
+  //background-color: var(--white);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+  background: url(/assets/Glassmorphism-Background.png);
+  background-size: cover;
+
+  &__greetings,
+  &__title {
+    display: flex;
+  }
+
+  &__title input {
+    margin-left: 0.5rem;
+    flex: 1 1 0%;
+    min-width: 0;
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+  }
+
+  &__title,
+  &__title input,
+  .your-schedule {
+    color: var(--black);
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  &__current-date {
+    display: flex;
+    justify-content: space-between;
+    //background-color: var(--mint);
+    border-radius: 30px;
+    padding: 0 0.5rem;
+
+    .text-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-left: 1rem;
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .image-wrapper {
+      height: 15vh;
+      width: 100%;
+    }
+  }
+
+  &__category-container {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+
+    .title,
+    .subtitle,
+    .category-counter {
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      padding-bottom: 3rem;
+    }
+
+    .title,
+    .subtitle {
+      opacity: 0.7;
+    }
+
+    .round-plus {
+      // Circle Plus (Add Category) Button
+      position: relative;
+      width: 70px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--blue);
+      color: var(--white);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+      align-self: center;
+      margin-top: 2rem;
+
+      i {
+        color: var(--beige);
+        line-height: 60px;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+/* Modal */
+
+.modal-radio {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.modal {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 3rem;
+
+  .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 90%;
+    max-height: 90vh;
+    background-color: rgba(153, 237, 209, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 3px 15px -2px #222;
+    padding: 4rem 2rem;
+
+    .top {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .fa-circle-xmark {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2.5rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .input-field {
+      position: relative;
+      width: 100%;
+
+      label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        color: var(--black);
+        transition: 0.2s all;
+        cursor: text;
+      }
+
+      input {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        padding: 0.5rem 0;
+        background-color: transparent;
+        border-bottom: 2px solid var(--black);
+        box-shadow: none;
+        color: #111;
+      }
+
+      input:invalid {
+        outline: 0;
+      }
+
+      input:focus,
+      input:valid {
+        border-color: var(--blue);
+      }
+
+      input:focus ~ label,
+      input:valid ~ label {
+        font-size: 14px;
+        top: -24px;
+        color: var(--blue);
+      }
+    }
+
+    input[type="submit"] {
+      margin-top: 1rem;
+      padding: 1.3em 3em;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 500;
+      color: var(--black);
+      background-color: transparent;
+      border: 1px solid var(--black);
+      border-radius: 45px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      outline: none;
+    }
+
+    input[type="submit"]:hover {
+      background-color: var(--black);
+      color: var(--white);
+    }
+  }
+}
+
+#modal-open:checked + .modal {
+  opacity: 1;
+  transform: scale(1);
+}

@@ -1,0 +1,20 @@
+@use "../util" as *;
+
+body {
+  background-color: var(--white);
+  color: var(--black);
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 300;
+
+  @include breakpoint-down(small) {
+    max-width: 100%;
+  }
+}
+
+.glassmorphism-card {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(16.5px);
+}
