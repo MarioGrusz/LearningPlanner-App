@@ -213,6 +213,10 @@
         border-color: var(--blue);
       }
 
+      input:focus {
+        font-size: 16px;
+      }
+
       input:focus ~ label,
       input:valid ~ label {
         font-size: 14px;
