@@ -1,6 +1,6 @@
 // ****** SELECT ITEMS **********
 
-const welcomePage = document.querySelector('.container');
+const welcomePage = document.querySelector('.welcome-page__container');
 const itemsListPage = document.querySelector('.items-container');
 const nextPageButton = document.querySelector('.welcome-page__btn');
 
@@ -17,8 +17,6 @@ const categoriesCounter = document.querySelector('.category-counter');
 const setHeightContainer = document.querySelector('.category-box-container');
 const infoHeight = setHeightContainer.getBoundingClientRect().height; ///????????
 
-console.log(infoHeight)
-
 
 
 
@@ -29,7 +27,11 @@ console.log(infoHeight)
 const leaveWelcomePage = (e) => {
     
     welcomePage.style.transform = "translateX(-100%)";
-    welcomePage.addEventListener("transitionend", () => {welcomePage.style.display="none"})
+    //welcomePage.style.display = 'none';
+    welcomePage.addEventListener("transitionend", (e) => {
+        welcomePage.style.display = "none"
+        console.log('displayNone')
+    });
     if(categories.length == 0 || categories.length !== 0) {
       itemsListPage.style.transform = "translateX(0)";
       itemsListPage.style.display = "flex";
@@ -222,15 +224,7 @@ window.addEventListener('DOMContentLoaded', e => {
 });
 
 // SELECTED CATEGORY ID
-categoriesConteiner.addEventListener('click', e =>{
-    if (e.target.tagName.toLowerCase() === 'li'){
-      selectedCategoryId = e.target.id;
 
-      
-      saveToLocalStorage();
-      displayCategory();
-    }; 
-});
 
 nextPageButton.addEventListener('click', leaveWelcomePage);
 
