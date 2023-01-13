@@ -385,6 +385,7 @@ const displayCategory = () => {
         
                         //Show Input Box
                         this.el.notificationBox.style.display = 'flex';
+                        this.el.notificationBox.style.zIndex = "100";
                     });
         
         
@@ -529,6 +530,7 @@ const displayCategory = () => {
                                             type="input"
                                             placeholder="e.g 20 etc"
                                         />
+                                        <input type="submit" value="Add Time" />
                                     </form>
                                 </div>
                             </div>
