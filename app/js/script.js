@@ -530,7 +530,7 @@ const displayCategory = () => {
                                             type="input"
                                             placeholder="e.g 20 etc"
                                         />
-                                        <input type="submit" value="Add Time" />
+                                        <input class="add-value-btn" type="submit" value="Add Time" />
                                     </form>
                                 </div>
                             </div>
