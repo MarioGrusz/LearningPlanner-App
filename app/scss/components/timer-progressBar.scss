@@ -16,6 +16,7 @@
   align-items: center;
   margin-right: 0;
   position: relative;
+  z-index: 100;
 }
 
 .timer__part {
@@ -241,4 +242,5 @@
   display: none;
   width: auto;
   height: auto;
+  z-index: 1000;
 }
