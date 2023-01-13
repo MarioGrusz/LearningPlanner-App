@@ -514,23 +514,23 @@ const displayCategory = () => {
                         return `
                         <div class="notification-time-box glassmorphism-card">
                             <div class="set-time-box">
-                            <div class="set-time-box__content">
-                                <h2 class="time-title">Put Time in Minutes (1-60)</h2>
-                                <button class="btn-close-box">
-                                <i class="fa-solid fa-circle-xmark"></i>
-                                </button>
-                            </div>
-            
-                            <div class="set-time-box__input-wrapper">
-                                <form class="time-form">
-                                <input
-                                    class="time-value"
-                                    id="time-value"
-                                    type="input"
-                                    placeholder="e.g 1 or 5 or 20 etc"
-                                />
-                                </form>
-                            </div>
+                                <div class="set-time-box__content">
+                                    <h2 class="time-title">Put Time</h2>
+                                    <button class="btn-close-box">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                    </button>
+                                </div>
+                
+                                <div class="set-time-box__input-wrapper">
+                                    <form class="time-form">
+                                        <input
+                                            class="time-value"
+                                            id="time-value"
+                                            type="input"
+                                            placeholder="e.g 20 etc"
+                                        />
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <span class="timer__part timer__part--minutes">00</span>
@@ -584,6 +584,8 @@ const displayCategory = () => {
                     category.taskRatio.pop();
                     category.taskRatio.push(taskRatioNumber);
                     saveToLocalStorage();
+
+                    //  TRY TO COME UP WITH FUNCTION UPDATE TASK RATIO TAKING ID AS A PARAMETER
           
                     new ProgressBar(progressBar, selectedCategory.taskRatio);  
           
