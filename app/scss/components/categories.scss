@@ -29,6 +29,7 @@
   padding: 1rem 0;
   border-radius: 15px;
   min-height: 15vh;
+  height: auto;
   transition: all 0.5s ease;
   cursor: pointer;
 
@@ -109,7 +110,6 @@
   min-height: 100vh;
   height: auto;
   top: 4rem;
-  bottom: 0;
   padding: 3rem 1rem;
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -145,7 +145,8 @@
   font-size: 15px;
   padding-left: 30px;
   transition: all 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.21);
+  //background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(15px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
@@ -154,7 +155,7 @@
 }
 
 .task-input:focus {
-  background-color: rgba(0, 0, 0, 0.21);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .task-input::placeholder {

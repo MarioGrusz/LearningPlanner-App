@@ -359,7 +359,7 @@ const displayCategory = () => {
                     };            
                 
                     this.interval = null;
-                    this.remainingSeconds = `${task.remainingTime}`;
+                    this.remainingSeconds = task.remainingTime;
                 
                     this.start();
                     this.stop();
@@ -369,9 +369,11 @@ const displayCategory = () => {
                 
                 
                     this.el.control.addEventListener('click', (e) => {
+
         
                         if (this.interval === null) {
                         this.start();
+                        this.getCurrentTarget(e)
                         } else {
                         this.stop();
                         this.updateRemainingTime();
@@ -447,17 +449,17 @@ const displayCategory = () => {
                     };
                     
         
-                    updateThisTasksRatio(thisCategoryId){
-                        this.categories = JSON.parse(localStorage.getItem('categories')) || [];
-                        this.selectedCategory = this.categories.find(category => category.id === thisCategoryId);
-                        this.completeTaskCount = this.selectedCategory.tasks.filter(task => task.complete).length;
-                        this.taskRatioNumber = Math.floor((100 * this.completeTaskCount) / this.selectedCategory.tasks.length);
-                        this.selectedCategory.taskRatio.pop();
-                        this.selectedCategory.taskRatio.push(this.taskRatioNumber);
+                    // updateThisTasksRatio(thisCategoryId){
+                    //     this.categories = JSON.parse(localStorage.getItem('categories')) || [];
+                    //     this.selectedCategory = this.categories.find(category => category.id === thisCategoryId);
+                    //     this.completeTaskCount = this.selectedCategory.tasks.filter(task => task.complete).length;
+                    //     this.taskRatioNumber = Math.floor((100 * this.completeTaskCount) / this.selectedCategory.tasks.length);
+                    //     this.selectedCategory.taskRatio.pop();
+                    //     this.selectedCategory.taskRatio.push(this.taskRatioNumber);
             
-                        saveToLocalStorage();
-                        new ProgressBar(progressBar, this.selectedCategory.taskRatio);  
-                    }
+                    //     saveToLocalStorage();
+                    //     new ProgressBar(progressBar, this.selectedCategory.taskRatio);  
+                    // }
         
         
                 
@@ -481,9 +483,26 @@ const displayCategory = () => {
                         this.el.minutes.textContent = minutes.toString().padStart(2, '0');
                         this.el.seconds.textContent = seconds.toString().padStart(2, '0');
                     } 
+
+
+                    getCurrentTarget(e) {
+
+                        let currentTarget = e.currentTarget.parentElement.previousSibling.previousSibling;
+                        console.log(currentTarget)
+                        
+
+    
+                        
+                    };
+
+                   
+
+
                 
                     start(){
-                
+
+                        //let currentTarget = this.getCurrentTarget(e)
+                        //console.log(currentTarget)
                         if(this.remainingSeconds === 0) return
             
                         this.interval = setInterval(() =>{
