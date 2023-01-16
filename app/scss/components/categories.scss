@@ -104,19 +104,16 @@
 }
 
 .fullscreen {
-  position: absolute;
   z-index: 9999;
-  width: 96%;
-  min-height: 100vh;
-  height: auto;
-  top: 4rem;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
   padding: 3rem 1rem;
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(16.5px);
   border-radius: 45px;
-  //border-top-left-radius: 45px;
-  //border-top-right-radius: 45px;
   will-change: auto;
 }
 

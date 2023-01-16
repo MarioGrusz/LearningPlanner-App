@@ -14,8 +14,7 @@ let categories = JSON.parse(localStorage.getItem('categories')) || [];
 let selectedCategoryId = localStorage.getItem('category.selectedCategoryId');
 
 const categoriesCounter = document.querySelector('.category-counter');
-const setHeightContainer = document.querySelector('.category-box-container');
-const infoHeight = setHeightContainer.getBoundingClientRect().height; ///????????
+
 
 
 
@@ -188,17 +187,55 @@ const displayCategory = () => {
             });   
         };
 
-        function openElement(){
-            categoryItem.classList.add('fullscreen'); 
-            openButton.innerText = 'CLOSE';
-            taskElementsContainer.style.display = 'flex';
-            categoryItem.style.height = `${infoHeight}px`;
+        //Small to fullscreen box -- function/animation
+
+        //Helping functions fullscreen animation (from div to fullscreen animation)
+        function getPosition(element){
+          const rect = element.getBoundingClientRect()
+          return {
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height
+          }
+        };
+
+        function toPx(val){
+          return [val, 'px'].join('')
+        };
+
+
+        function openElment(){
+
+            if (categoryItem.classList.contains('fullscreen')){
+                categoryItem.classList.remove('fullscreen');
+                taskElementsContainer.style.display = 'none'
+                setTimeout(e => categoryItem.style.position = 'static', 1000);
+                openButton.innerText = 'OPEN';
+                selectedCategoryId = null;
+                saveToLocalStorage();
+
+            } else {
+            
+                let pos = getPosition(categoryItem)
+                categoryItem.style.width = toPx(pos.width)
+                categoryItem.style.height = toPx(pos.height)
+                categoryItem.style.top = toPx(pos.top)
+                categoryItem.style.left = toPx(pos.left)
+                categoryItem.classList.add('fullscreen');
+                taskElementsContainer.style.display = 'flex';
+                openButton.innerText = 'CLOSE';
+                categoryItem.position = 'fixed';
+    
+                console.log('function open')
+               
+            }
         };
 
 
         //SAVE FULLSCREEN OPTION ON REFRESH
         if (category.id === selectedCategoryId) { 
-          openElement();
+            //openElment();
         };
 
       
@@ -206,23 +243,8 @@ const displayCategory = () => {
         openButton.addEventListener('click', e => {
 
             selectedCategoryId = e.target.parentElement.parentElement.id;
-            saveToLocalStorage();
-                        
-            if (categoryItem.classList.contains('fullscreen')){
-                categoryItem.classList.remove('fullscreen');
-                taskElementsContainer.style.display = 'none'
-                openButton.innerText = 'OPEN';
-                selectedCategoryId = null;
-                saveToLocalStorage();
-
-                categoryItem.style.height = 'auto';
-
-            } else {
-                openElement();
-
-                //const infoHeight = setHeightContainer.getBoundingClientRect().height;
-                //categoryItem.style.height = `${infoHeight}px`;
-            }
+            saveToLocalStorage();                      
+            openElment();
         }); 
 
 
@@ -447,20 +469,6 @@ const displayCategory = () => {
                         task.remainingTime.push(this.remainingSeconds);
                         localStorage.setItem('categories', JSON.stringify(categories));
                     };
-                    
-        
-                    // updateThisTasksRatio(thisCategoryId){
-                    //     this.categories = JSON.parse(localStorage.getItem('categories')) || [];
-                    //     this.selectedCategory = this.categories.find(category => category.id === thisCategoryId);
-                    //     this.completeTaskCount = this.selectedCategory.tasks.filter(task => task.complete).length;
-                    //     this.taskRatioNumber = Math.floor((100 * this.completeTaskCount) / this.selectedCategory.tasks.length);
-                    //     this.selectedCategory.taskRatio.pop();
-                    //     this.selectedCategory.taskRatio.push(this.taskRatioNumber);
-            
-                    //     saveToLocalStorage();
-                    //     new ProgressBar(progressBar, this.selectedCategory.taskRatio);  
-                    // }
-        
         
                 
                     updateInterfaceControls(){
@@ -488,11 +496,7 @@ const displayCategory = () => {
                     getCurrentTarget(e) {
 
                         let currentTarget = e.currentTarget.parentElement.previousSibling.previousSibling;
-                        console.log(currentTarget)
-                        
-
-    
-                        
+                        console.log(currentTarget)   
                     };
 
                    
