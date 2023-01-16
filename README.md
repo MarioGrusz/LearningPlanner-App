@@ -8,7 +8,7 @@ One of the most important reasons you should use this app is that it will help y
 
 ## Live demo [_here_](https://learning-helper.netlify.app/)
 
-Almost done but stil needs some changes. Stay tuned!!!
+Almost done, still needs some changes. Stay tuned!!!
 
 
 
