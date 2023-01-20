@@ -246,6 +246,7 @@
     }
 
     input[type="submit"]:hover {
+      min-height: 2rem;
       background-color: var(--black);
       color: var(--white);
     }
