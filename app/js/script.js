@@ -269,7 +269,7 @@ const displayCategory = () => {
       
               };
       
-              //if(taskItemName == null || taskItemName === '') return;
+              if(taskForms[i][0].value == null || taskForms[i][0].value === '') return;
       
               const selectedCategory = categories.find(category => category.id === thisCategoryId);
               selectedCategory.tasks.push(task);
@@ -323,6 +323,7 @@ const displayCategory = () => {
                 category.taskRatio.pop();
                 category.taskRatio.push(taskRatioNumber);
                 saveToLocalStorage();
+
 
 
                 //PROGRESS BAR
@@ -394,16 +395,13 @@ const displayCategory = () => {
 
         
                         if (this.interval === null) {
-                        this.start();
-                        this.getCurrentTarget(e)
+                        this.start(e);
                         } else {
                         this.stop();
                         this.updateRemainingTime();
                         }
                 
                     });
-        
-                
                     
                     this.el.reset.addEventListener('click', (e) => {
         
@@ -490,24 +488,12 @@ const displayCategory = () => {
                     
                         this.el.minutes.textContent = minutes.toString().padStart(2, '0');
                         this.el.seconds.textContent = seconds.toString().padStart(2, '0');
-                    } 
-
-
-                    getCurrentTarget(e) {
-
-                        let currentTarget = e.currentTarget.parentElement.previousSibling.previousSibling;
-                        console.log(currentTarget)   
                     };
 
                    
-
-
                 
                     start(){
-
-                        //let currentTarget = this.getCurrentTarget(e)
-                        //console.log(currentTarget)
-                        if(this.remainingSeconds === 0) return
+                        if(this.remainingSeconds === 0 || this.remainingSeconds === null ) return
             
                         this.interval = setInterval(() =>{
             
@@ -610,7 +596,7 @@ const displayCategory = () => {
                     category.taskRatio.push(taskRatioNumber);
                     saveToLocalStorage();
 
-                    //  TRY TO COME UP WITH FUNCTION UPDATE TASK RATIO TAKING ID AS A PARAMETER
+                    //  TRY TO COME UP WITH FUNCTION UPDATE TASK RATIO TAKING ID AS A PARAMETER!!!!!!
           
                     new ProgressBar(progressBar, selectedCategory.taskRatio);  
           
@@ -640,10 +626,10 @@ window.addEventListener('DOMContentLoaded', e => {
         itemsListPage.style.transform = "translateX(0)";
         itemsListPage.style.display = "flex";
         displayCategory();
-        updateCategoryCounter();
     };  
 
     getCurrentDate();
+    updateCategoryCounter();
     
 });
 
