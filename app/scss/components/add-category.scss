@@ -18,6 +18,10 @@
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-origin: bottom left;
 
+  @include breakpoint-up(large) {
+    margin-inline: auto;
+  }
+
   &__greetings,
   &__title {
     display: flex;
@@ -125,10 +129,9 @@
 
 .modal {
   position: fixed;
-  height: 100%;
+  height: 300vh;
   width: 100%;
-  top: 0;
-  left: 0;
+  inset: 0;
   right: auto;
   bottom: auto;
   overflow: hidden;
@@ -140,14 +143,14 @@
   justify-content: center;
   align-items: flex-start;
   padding-top: 3rem;
+  overflow: hidden;
 
   .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    top: 0;
-    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    inset: 0;
   }
 
   .content {
@@ -226,6 +229,7 @@
     }
 
     input[type="submit"] {
+      min-height: 2rem;
       margin-top: 1rem;
       padding: 1.3em 3em;
       font-size: 12px;
@@ -234,7 +238,7 @@
       font-weight: 500;
       color: var(--black);
       background-color: transparent;
-      border: 1px solid var(--black);
+      border: 1px solid red;
       border-radius: 45px;
       box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
       cursor: pointer;

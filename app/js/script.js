@@ -35,6 +35,8 @@ const leaveWelcomePage = (e) => {
     }
 };
 
+
+
 // CURRENT DATE
 const getCurrentDate = () => {
     const date = new Date();
@@ -226,10 +228,8 @@ const displayCategory = () => {
                 taskElementsContainer.style.display = 'flex';
                 openButton.innerText = 'CLOSE';
                 categoryItem.position = 'fixed';
-    
-                console.log('function open')
                
-            }
+            };
         };
 
 
@@ -634,9 +634,17 @@ const saveToLocalStorage = () => {
 
 // ****** EVENT LISTENERS **********
 window.addEventListener('DOMContentLoaded', e => {
+
+    if(categories.length !== 0){
+        welcomePage.style.display = "none"
+        itemsListPage.style.transform = "translateX(0)";
+        itemsListPage.style.display = "flex";
+        displayCategory();
+        updateCategoryCounter();
+    };  
+
     getCurrentDate();
-    displayCategory();
-    updateCategoryCounter();
+    
 });
 
 // SELECTED CATEGORY ID
@@ -665,10 +673,3 @@ form.addEventListener('submit', e =>{
     updateCategoryCounter();
 
 });
-  
-
-
-
-
-
-// ****** LOCAL STORAGE **********
