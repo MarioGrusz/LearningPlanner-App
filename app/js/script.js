@@ -58,6 +58,7 @@ const updateCategoryCounter = () => {
     }  
 };
 
+
 //RENDER CATEGORY
 const displayCategory = () => {
     categoriesConteiner.innerHTML = '';
@@ -248,6 +249,17 @@ const displayCategory = () => {
         }); 
 
 
+        //UPDATE DONE/UNDONE TAKS RATIO
+        function updateTasksRatio(thisCategoryId) {
+            const selectedCategory = categories.find(category => category.id === thisCategoryId);
+            const completeTaskCount = selectedCategory.tasks.filter(task => task.complete).length;
+            let taskRatioNumber = Math.floor((100 * completeTaskCount) / category.tasks.length);
+            category.taskRatio.pop();
+            category.taskRatio.push(taskRatioNumber);
+            saveToLocalStorage();
+        };
+
+
 
         //FUNCTIONS AND EVENT LISTENERS HANDEL INSIDE CATEGORY TASKS
 
@@ -276,6 +288,7 @@ const displayCategory = () => {
               saveToLocalStorage();
       
               updateCategoryCounter(thisCategoryId);
+              updateTasksRatio(thisCategoryId);
               saveToLocalStorage();
       
               e.target.reset();
@@ -317,12 +330,7 @@ const displayCategory = () => {
                 taskFirst.appendChild(countDown);
         
                 tasksWrapper.appendChild(taskElement);
-        
-                const completeTaskCount = category.tasks.filter(task => task.complete).length;
-                let taskRatioNumber = Math.floor((100 * completeTaskCount) / category.tasks.length);
-                category.taskRatio.pop();
-                category.taskRatio.push(taskRatioNumber);
-                saveToLocalStorage();
+                
 
 
 
@@ -368,96 +376,92 @@ const displayCategory = () => {
                 //COUNTDOWN TIMER  
                 class Timer {
                     constructor(root) {
-                    root.innerHTML = Timer.getHTML();
-                        
-                    this.el = {
-                        minutes: root.querySelector('.timer__part--minutes'),
-                        seconds: root.querySelector('.timer__part--seconds'),
-                        control: root.querySelector('.timer__btn--control'),
-                        reset: root.querySelector('.timer__btn--reset'),
-                        timeForm: root.querySelector('.time-form'),
-                        timeValue: root.querySelector('.time-value'),
-                        notificationBox: root.querySelector('.notification-time-box'),
-                        closeBoxButton: root.querySelector('.btn-close-box'),
-                    };            
-                
-                    this.interval = null;
-                    this.remainingSeconds = task.remainingTime;
-                
-                    this.start();
-                    this.stop();
-            
-                    this.updateInterfaceTime();
-                    this.updateInterfaceControls();
-                
-                
-                    this.el.control.addEventListener('click', (e) => {
-
-        
-                        if (this.interval === null) {
-                        this.start(e);
-                        } else {
-                        this.stop();
-                        this.updateRemainingTime();
-                        }
-                
-                    });
+                        root.innerHTML = Timer.getHTML();
+                            
+                        this.el = {
+                            minutes: root.querySelector('.timer__part--minutes'),
+                            seconds: root.querySelector('.timer__part--seconds'),
+                            control: root.querySelector('.timer__btn--control'),
+                            reset: root.querySelector('.timer__btn--reset'),
+                            timeForm: root.querySelector('.time-form'),
+                            timeValue: root.querySelector('.time-value'),
+                            notificationBox: root.querySelector('.notification-time-box'),
+                            closeBoxButton: root.querySelector('.btn-close-box'),
+                        };            
                     
-                    this.el.reset.addEventListener('click', (e) => {
-        
-                        //Show Input Box
-                        this.el.notificationBox.style.display = 'flex';
-                        this.el.notificationBox.style.zIndex = "100";
-                    });
-        
-        
-                    //Close Notification/Put Time Value Box
-                    this.el.closeBoxButton.addEventListener('click', e => {
-        
-                        this.el.notificationBox.style.display = 'none';
-                    });
-        
-        
-                    this.el.timeForm.addEventListener('submit' , e => {
-                        e.preventDefault();
-                        const inputeMinutes = this.el.timeValue.value;
-        
-                        
-                        const thisCategoryId = e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id;
-                        const thisTaskId = e.currentTarget.parentElement.parentElement.parentElement.parentElement.previousSibling.previousSibling.id;
-        
-                        const selectedCategory = categories.find(category => category.id === thisCategoryId );
-                        const selectedTask = selectedCategory.tasks.find(task => task.id === thisTaskId);
-        
-                        selectedTask.remainingTime.pop();
-                        selectedTask.remainingTime.push(inputeMinutes);
-                        saveToLocalStorage();
-        
-                        this.el.notificationBox.style.display = 'none';
-                        e.target.reset();
-        
-                        if(inputeMinutes < 60) {
+                        this.interval = null;
+                        this.remainingSeconds = task.remainingTime;
+                    
+                        this.start();
                         this.stop();
+                
+                        this.updateInterfaceTime();
+                        this.updateInterfaceControls();
+                    
+                    
+                        this.el.control.addEventListener('click', (e) => {
+
+            
+                            if (this.interval === null) {
+                            this.start();
+                            } else {
+                            this.stop();
+                            this.updateRemainingTime();
+                            }
+                    
+                        });
                         
-                        this.remainingSeconds = `${selectedTask.remainingTime}` * 60;
-                        this.updateRemainingTime();
-                        this.updateInterfaceTime();               
-                        };
-        
-                        
-                        checkboxElement.checked = false;
-                        task.complete = false;
-                        saveToLocalStorage();
-                        showTasksCount();
-        
-                        let completeTaskCount = category.tasks.filter(task => task.complete).length;
-                        let taskRatioNumber = Math.floor((100 * completeTaskCount) / category.tasks.length);
-                        category.taskRatio.pop();
-                        category.taskRatio.push(taskRatioNumber);
-                        localStorage.setItem('categories', JSON.stringify(categories));
-        
-                        new ProgressBar(progressBar, category.taskRatio); 
-                    });
+                        this.el.reset.addEventListener('click', (e) => {
+            
+                            //Show Input Box
+                            this.el.notificationBox.style.display = 'flex';
+                            this.el.notificationBox.style.zIndex = "100";
+                        });
+            
+            
+                        //Close Notification/Put Time Value Box
+                        this.el.closeBoxButton.addEventListener('click', e => {
+            
+                            this.el.notificationBox.style.display = 'none';
+                        });
+            
+            
+                        this.el.timeForm.addEventListener('submit' , e => {
+                            e.preventDefault();
+                            const inputeMinutes = this.el.timeValue.value;
+
+                            
+                            const thisCategoryId = e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+                            const thisTaskId = e.currentTarget.parentElement.parentElement.parentElement.parentElement.previousSibling.previousSibling.id;
+            
+                            const selectedCategory = categories.find(category => category.id === thisCategoryId );
+                            const selectedTask = selectedCategory.tasks.find(task => task.id === thisTaskId);
+            
+                            selectedTask.remainingTime.pop();
+                            selectedTask.remainingTime.push(inputeMinutes);
+                            saveToLocalStorage();
+            
+                            this.el.notificationBox.style.display = 'none';
+                            e.target.reset();
+            
+                            if(inputeMinutes < 60) {
+                            this.stop();
+                            
+                            this.remainingSeconds = selectedTask.remainingTime * 60;
+                            this.updateRemainingTime();
+                            this.updateInterfaceTime();               
+                            };
+            
+                            
+                            checkboxElement.checked = false;
+                            task.complete = false;
+                            saveToLocalStorage();
+                            showTasksCount();
+
+                            updateTasksRatio(thisCategoryId);
+            
+                            new ProgressBar(progressBar, category.taskRatio); 
+                        });
         
                     };
         
@@ -466,6 +470,8 @@ const displayCategory = () => {
                         task.remainingTime.pop();
                         task.remainingTime.push(this.remainingSeconds);
                         localStorage.setItem('categories', JSON.stringify(categories));
+
+                        console.log('update ramaining time')
                     };
         
                 
@@ -480,7 +486,7 @@ const displayCategory = () => {
                             this.el.control.classList.remove('timer__btn--start');
                     
                         }
-                    }
+                    };
                 
                     updateInterfaceTime() {
                         const minutes = Math.floor(this.remainingSeconds / 60);
@@ -489,28 +495,29 @@ const displayCategory = () => {
                         this.el.minutes.textContent = minutes.toString().padStart(2, '0');
                         this.el.seconds.textContent = seconds.toString().padStart(2, '0');
                     };
-
-                   
                 
                     start(){
+
                         if(this.remainingSeconds === 0 || this.remainingSeconds === null ) return
-            
-                        this.interval = setInterval(() =>{
-            
-                            this.remainingSeconds--;
-                            this.updateInterfaceTime();
-                    
-                            if (this.remainingSeconds === 0) {
-                            this.stop();
-                            checkboxElement.checked = true;
-                            task.complete = true;
-                            showTasksCount();
-                            saveToLocalStorage();
-                            }
-                    
-                        }, 1000);
-                    
-                        this.updateInterfaceControls()
+                
+                            this.interval = setInterval(() =>{
+                
+                                this.remainingSeconds--;
+                                this.updateInterfaceTime();
+                        
+                                if (this.remainingSeconds === 0) {
+                                this.stop();
+                                checkboxElement.checked = true;
+                                task.complete = true;
+                                showTasksCount();
+                                this.updateRemainingTime();
+                                saveToLocalStorage();
+                                }
+                        
+                            }, 1000);
+                        
+                            this.updateInterfaceControls();
+                            
                         }
                     
                         stop(){
@@ -518,7 +525,7 @@ const displayCategory = () => {
                         this.interval = null;
                         this.updateInterfaceControls();
                 
-                    }
+                    };
                 
                     static getHTML(){
                         return `
@@ -588,15 +595,7 @@ const displayCategory = () => {
                     saveToLocalStorage()
                     showTasksCount()
           
-                    //updateTasksRatio(thisCategoryId);
-
-                    const completeTaskCount = selectedCategory.tasks.filter(task => task.complete).length;
-                    let taskRatioNumber = Math.floor((100 * completeTaskCount) / category.tasks.length);
-                    category.taskRatio.pop();
-                    category.taskRatio.push(taskRatioNumber);
-                    saveToLocalStorage();
-
-                    //  TRY TO COME UP WITH FUNCTION UPDATE TASK RATIO TAKING ID AS A PARAMETER!!!!!!
+                    updateTasksRatio(thisCategoryId);
           
                     new ProgressBar(progressBar, selectedCategory.taskRatio);  
           
@@ -634,7 +633,6 @@ window.addEventListener('DOMContentLoaded', e => {
 });
 
 // SELECTED CATEGORY ID
-
 
 nextPageButton.addEventListener('click', leaveWelcomePage);
 
