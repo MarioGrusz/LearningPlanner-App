@@ -140,7 +140,7 @@ const displayCategory = () => {
         categoryItem.appendChild(taskElementsContainer);
 
         categoriesConteiner.appendChild(categoryWrapper); //APPEND TO MAIN CONTAINER
-        showProgressBar();
+        //showProgressBar();
 
 
         function showProgressBar(){
@@ -149,7 +149,7 @@ const displayCategory = () => {
             } else {
                 progressBar.style.display = 'block'
             }
-        }
+        };
     
 
         //DELETE FUNCTION
@@ -193,45 +193,52 @@ const displayCategory = () => {
         //Small to fullscreen box -- function/animation
 
         //Helping functions fullscreen animation (from div to fullscreen animation)
-        function getPosition(element){
-          const rect = element.getBoundingClientRect()
-          return {
-            top: rect.top,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height
-          }
+
+        const UNIT = 'px';
+
+        const getElementPosition = element => {
+        const rect = element.getBoundingClientRect();
+            return {
+                top: rect.top,
+                left: rect.left,
+                width: rect.width,
+                height: rect.height
+            };
         };
 
-        function toPx(val){
-          return [val, 'px'].join('')
+        const setElementSize = (element, { width, height }) => {
+            element.style.width = `${width}${UNIT}`;
+            element.style.height = `${height}${UNIT}`;
         };
 
+        const setElementPosition = (element, { top, left }) => {
+            element.style.top = `${top}${UNIT}`;
+            element.style.left = `${left}${UNIT}`;
+        };
 
-        function openElment(){
+        const openElement = () => {
 
-            if (categoryItem.classList.contains('fullscreen')){
+            if (categoryItem.classList.contains('fullscreen')) {
                 categoryItem.classList.remove('fullscreen');
                 taskElementsContainer.style.display = 'none'
-                setTimeout(e => categoryItem.style.position = 'static', 1000);
+                categoryItem.style.position = 'static';
                 openButton.innerText = 'OPEN';
-                selectedCategoryId = null;
+                progressBar.style.display = 'none';
                 saveToLocalStorage();
-
             } else {
-            
-                let pos = getPosition(categoryItem)
-                categoryItem.style.width = toPx(pos.width)
-                categoryItem.style.height = toPx(pos.height)
-                categoryItem.style.top = toPx(pos.top)
-                categoryItem.style.left = toPx(pos.left)
+                const pos = getElementPosition(categoryItem);
+                setElementSize(categoryItem, pos);
+                setElementPosition(categoryItem, pos);
                 categoryItem.classList.add('fullscreen');
                 taskElementsContainer.style.display = 'flex';
                 openButton.innerText = 'CLOSE';
-                categoryItem.position = 'fixed';
-               
-            };
+                showProgressBar();
+                categoryItem.style.position = 'fixed';
+            }
         };
+
+
+
 
 
         //SAVE FULLSCREEN OPTION ON REFRESH
@@ -245,7 +252,7 @@ const displayCategory = () => {
 
             selectedCategoryId = e.target.parentElement.parentElement.id;
             saveToLocalStorage();                      
-            openElment();
+            openElement();
         }); 
 
 
@@ -300,7 +307,7 @@ const displayCategory = () => {
         const displayTask = () => {
 
             tasksWrapper.innerHTML = "";
-            showProgressBar();
+            //showProgressBar();
 
             category.tasks.forEach(task =>{
 
