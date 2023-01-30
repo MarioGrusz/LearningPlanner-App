@@ -144,10 +144,10 @@ const displayCategory = () => {
 
 
         function showProgressBar(){
-          if(category.tasks.length === 0){
-                progressBar.style.display = 'none'
-            } else {
+          if(category.tasks.length !== 0 && categoryItem.classList.contains('fullscreen')){
                 progressBar.style.display = 'block'
+            } else {
+                progressBar.style.display = 'none'
             }
         };
     
@@ -307,7 +307,7 @@ const displayCategory = () => {
         const displayTask = () => {
 
             tasksWrapper.innerHTML = "";
-            //showProgressBar();
+            showProgressBar();
 
             category.tasks.forEach(task =>{
 
