@@ -407,10 +407,11 @@ const displayCategory = () => {
                     
                     
                         this.el.control.addEventListener('click', (e) => {
+                            
+                            const target =  e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id;
 
-            
                             if (this.interval === null) {
-                            this.start();
+                            this.start(target);
                             } else {
                             this.stop();
                             this.updateRemainingTime();
@@ -503,9 +504,11 @@ const displayCategory = () => {
                         this.el.seconds.textContent = seconds.toString().padStart(2, '0');
                     };
                 
-                    start(){
+                    start(target){
+                        
+                        const thisCategoryId = target;
 
-                        if(this.remainingSeconds === 0 || this.remainingSeconds === null ) return
+                        if(this.remainingSeconds === 0 || this.remainingSeconds === [] ) return
                 
                             this.interval = setInterval(() =>{
                 
@@ -518,7 +521,9 @@ const displayCategory = () => {
                                 task.complete = true;
                                 showTasksCount();
                                 this.updateRemainingTime();
+                                updateTasksRatio(thisCategoryId);
                                 saveToLocalStorage();
+                                new ProgressBar(progressBar, category.taskRatio);
                                 }
                         
                             }, 1000);
