@@ -11,7 +11,7 @@ const categoryInput = document.getElementById('category-name');
 const categoriesConteiner = document.querySelector('.category-box-container');
 
 const username = localStorage.getItem('username') || '';
-const categories = JSON.parse(localStorage.getItem('categories')) || [];
+let categories = JSON.parse(localStorage.getItem('categories')) || [];
 let selectedCategoryId = localStorage.getItem('category.selectedCategoryId');
 
 const categoriesCounter = document.querySelector('.category-counter');
