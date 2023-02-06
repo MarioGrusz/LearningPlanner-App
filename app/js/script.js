@@ -5,9 +5,8 @@ const itemsListPage = document.querySelector('.items-container');
 const nextPageButton = document.querySelector('.welcome-page__btn');
 
 const displayCurrentDate = document.querySelector('.text-wrapper');
-
-const form = document.getElementById('new-category-form');
 const nameInput = document.querySelector('#name');
+const form = document.getElementById('new-category-form');
 const categoryInput = document.getElementById('category-name');
 const categoriesConteiner = document.querySelector('.category-box-container');
 
@@ -16,9 +15,6 @@ const categories = JSON.parse(localStorage.getItem('categories')) || [];
 let selectedCategoryId = localStorage.getItem('category.selectedCategoryId');
 
 const categoriesCounter = document.querySelector('.category-counter');
-
-
-
 
 
 
@@ -146,8 +142,9 @@ const displayCategory = () => {
 
 
         function showProgressBar(){
-          if(category.tasks.length !== 0 && categoryItem.classList.contains('fullscreen')){
+          if(category.tasks.length !== 0 && categoryItem.classList.contains('active')){
                 progressBar.style.display = 'block'
+                console.log('progress bar')
             } else {
                 progressBar.style.display = 'none'
             }
@@ -155,24 +152,6 @@ const displayCategory = () => {
     
 
         //DELETE FUNCTION
-        // function deleteElement(e){
-           
-        //     let thisItem = e.currentTarget.parentElement.parentElement.parentElement;
-        //     thisItem.classList.add('fall');
-
-        //     window.addEventListener('transitionend', function(e){
-        //         categories = categories.filter(item => item !== category);
-        //         selectedCategoryId = null;
-
-                
-
-                
-        //         saveToLocalStorage();
-        //         displayCategory();
-        //         updateCategoryCounter();
-
-        //     });
-        // };
   
         function deleteElement(e) {
             let thisItem = e.currentTarget.parentElement.parentElement.parentElement;
@@ -628,7 +607,7 @@ window.addEventListener('DOMContentLoaded', e => {
 nameInput.value = username;
 nameInput.addEventListener('change', (e) => {
     localStorage.setItem('username', e.target.value);
-})
+});
 
 // SELECTED CATEGORY ID
 
