@@ -197,7 +197,7 @@ const displayCategory = () => {
         //Unfold/Fold category box
         function toggleAccordion(event) {
 
-            categoryItem.style.height = `${itemsListPage.getBoundingClientRect().height}px`;
+            //categoryItem.style.height = `${itemsListPage.getBoundingClientRect().height}px`;
         
             categoryItem.classList.toggle("active");
             taskElementsContainer.style.display = categoryItem.classList.contains('active') ? 'flex' : 'none';
