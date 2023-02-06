@@ -6,6 +6,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  min-height: 2rem;
   margin-top: 2rem;
   z-index: 10;
 }
@@ -30,8 +31,10 @@
   border-radius: 15px;
   min-height: 15vh;
   height: auto;
-  transition: all 0.5s ease;
+  //transition: all 0.5s ease;
+  transition: height 1s ease;
   cursor: pointer;
+  touch-action: pan-y;
 
   &__task {
     padding-bottom: 1rem;
@@ -116,6 +119,13 @@
   backdrop-filter: blur(16.5px);
   //border-radius: 45px;
   will-change: auto;
+}
+
+.active {
+  //height: 100vh; /* adjust this value as needed */
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
 }
 
 /* Items/Task To Do Container/Input Form - Create Single Item */

@@ -7,10 +7,12 @@ const nextPageButton = document.querySelector('.welcome-page__btn');
 const displayCurrentDate = document.querySelector('.text-wrapper');
 
 const form = document.getElementById('new-category-form');
+const nameInput = document.querySelector('#name');
 const categoryInput = document.getElementById('category-name');
 const categoriesConteiner = document.querySelector('.category-box-container');
 
-let categories = JSON.parse(localStorage.getItem('categories')) || [];
+const username = localStorage.getItem('username') || '';
+const categories = JSON.parse(localStorage.getItem('categories')) || [];
 let selectedCategoryId = localStorage.getItem('category.selectedCategoryId');
 
 const categoriesCounter = document.querySelector('.category-counter');
@@ -140,7 +142,7 @@ const displayCategory = () => {
         categoryItem.appendChild(taskElementsContainer);
 
         categoriesConteiner.appendChild(categoryWrapper); //APPEND TO MAIN CONTAINER
-        //showProgressBar();
+
 
 
         function showProgressBar(){
@@ -153,22 +155,45 @@ const displayCategory = () => {
     
 
         //DELETE FUNCTION
-        function deleteElement(e){
+        // function deleteElement(e){
            
+        //     let thisItem = e.currentTarget.parentElement.parentElement.parentElement;
+        //     thisItem.classList.add('fall');
+
+        //     window.addEventListener('transitionend', function(e){
+        //         categories = categories.filter(item => item !== category);
+        //         selectedCategoryId = null;
+
+                
+
+                
+        //         saveToLocalStorage();
+        //         displayCategory();
+        //         updateCategoryCounter();
+
+        //     });
+        // };
+  
+        function deleteElement(e) {
             let thisItem = e.currentTarget.parentElement.parentElement.parentElement;
             thisItem.classList.add('fall');
-
-            window.addEventListener('transitionend', function(){
+        
+            let transitionEndHandler = function(e) {
                 categories = categories.filter(item => item !== category);
                 selectedCategoryId = null;
-                
+        
                 saveToLocalStorage();
                 displayCategory();
-                updateCategoryCounter(); 
-
-            });
-        };
-  
+                updateCategoryCounter();
+        
+                // Remove the transitionend event listener
+                window.removeEventListener('transitionend', transitionEndHandler);
+            };
+        
+            window.addEventListener('transitionend', transitionEndHandler);
+        }
+        
+        
         //EDIT FUNCTION
         function editElement(e){
   
@@ -190,55 +215,17 @@ const displayCategory = () => {
             });   
         };
 
-        //Small to fullscreen box -- function/animation
+        //Unfold/Fold category box
+        function toggleAccordion(event) {
 
-        //Helping functions fullscreen animation (from div to fullscreen animation)
-
-        const UNIT = 'px';
-
-        const getElementPosition = element => {
-        const rect = element.getBoundingClientRect();
-            return {
-                top: rect.top,
-                left: rect.left,
-                width: rect.width,
-                height: rect.height
-            };
-        };
-
-        const setElementSize = (element, { width, height }) => {
-            element.style.width = `${width}${UNIT}`;
-            element.style.height = `${height}${UNIT}`;
-        };
-
-        const setElementPosition = (element, { top, left }) => {
-            element.style.top = `${top}${UNIT}`;
-            element.style.left = `${left}${UNIT}`;
-        };
-
-        const openElement = () => {
-
-            if (categoryItem.classList.contains('fullscreen')) {
-                categoryItem.classList.remove('fullscreen');
-                taskElementsContainer.style.display = 'none'
-                categoryItem.style.position = 'static';
-                openButton.innerText = 'OPEN';
-                progressBar.style.display = 'none';
-                saveToLocalStorage();
-            } else {
-                const pos = getElementPosition(categoryItem);
-                setElementSize(categoryItem, pos);
-                setElementPosition(categoryItem, pos);
-                categoryItem.classList.add('fullscreen');
-                taskElementsContainer.style.display = 'flex';
-                openButton.innerText = 'CLOSE';
-                showProgressBar();
-                categoryItem.style.position = 'fixed';
-            }
-        };
-
-
-
+            categoryItem.style.height = `${itemsListPage.getBoundingClientRect().height}px`;
+        
+            categoryItem.classList.toggle("active");
+            taskElementsContainer.style.display = categoryItem.classList.contains('active') ? 'flex' : 'none';
+            openButton.innerText = categoryItem.classList.contains('active') ? 'CLOSE' : 'OPEN';
+            progressBar.style.display = categoryItem.classList.contains('active') ? 'block' : 'none';
+            categoryItem.classList.contains('active') ? showProgressBar() : undefined;
+        }
 
 
         //SAVE FULLSCREEN OPTION ON REFRESH
@@ -246,14 +233,12 @@ const displayCategory = () => {
             //openElment();
         };
 
-      
-        //CATEGORY BOX TO FULLSCREEN 
-        openButton.addEventListener('click', e => {
+        openButton.addEventListener('click', () => {
+            toggleAccordion()
 
-            selectedCategoryId = e.target.parentElement.parentElement.id;
-            saveToLocalStorage();                      
-            openElement();
-        }); 
+        });
+
+
 
 
         //UPDATE DONE/UNDONE TAKS RATIO
@@ -407,10 +392,10 @@ const displayCategory = () => {
                     
                     
                         this.el.control.addEventListener('click', (e) => {
-
+                            const target =  e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id;
             
                             if (this.interval === null) {
-                            this.start();
+                            this.start(target);
                             } else {
                             this.stop();
                             this.updateRemainingTime();
@@ -456,7 +441,8 @@ const displayCategory = () => {
                             
                             this.remainingSeconds = selectedTask.remainingTime * 60;
                             this.updateRemainingTime();
-                            this.updateInterfaceTime();               
+                            this.updateInterfaceTime();
+                            updateTasksRatio(thisCategoryId);               
                             };
             
                             
@@ -465,8 +451,6 @@ const displayCategory = () => {
                             saveToLocalStorage();
                             showTasksCount();
 
-                            updateTasksRatio(thisCategoryId);
-            
                             new ProgressBar(progressBar, category.taskRatio); 
                         });
         
@@ -477,8 +461,6 @@ const displayCategory = () => {
                         task.remainingTime.pop();
                         task.remainingTime.push(this.remainingSeconds);
                         localStorage.setItem('categories', JSON.stringify(categories));
-
-                        console.log('update ramaining time')
                     };
         
                 
@@ -503,9 +485,11 @@ const displayCategory = () => {
                         this.el.seconds.textContent = seconds.toString().padStart(2, '0');
                     };
                 
-                    start(){
+                    start(target){
 
-                        if(this.remainingSeconds === 0 || this.remainingSeconds === null ) return
+                        const thisCategoryId = target;
+
+                        if(this.remainingSeconds === 0 || this.remainingSeconds === []) return
                 
                             this.interval = setInterval(() =>{
                 
@@ -518,7 +502,9 @@ const displayCategory = () => {
                                 task.complete = true;
                                 showTasksCount();
                                 this.updateRemainingTime();
+                                updateTasksRatio(thisCategoryId);
                                 saveToLocalStorage();
+                                new ProgressBar(progressBar, category.taskRatio);
                                 }
                         
                             }, 1000);
@@ -638,6 +624,11 @@ window.addEventListener('DOMContentLoaded', e => {
     updateCategoryCounter();
     
 });
+
+nameInput.value = username;
+nameInput.addEventListener('change', (e) => {
+    localStorage.setItem('username', e.target.value);
+})
 
 // SELECTED CATEGORY ID
 
