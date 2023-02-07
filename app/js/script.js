@@ -429,6 +429,7 @@ const displayCategory = () => {
                             task.complete = false;
                             saveToLocalStorage();
                             showTasksCount();
+                            updateTasksRatio(thisCategoryId);  
 
                             new ProgressBar(progressBar, category.taskRatio); 
                         });
