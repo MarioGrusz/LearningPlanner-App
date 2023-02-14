@@ -122,7 +122,7 @@ const displayCategory = () => {
           <input
             class="task-input"
             type="text"
-            placeholder="Name a new task and enter/click to add..."
+            placeholder="Add task..."
           />
           <input
             class="create-task-btn"

@@ -1,16 +1,32 @@
 @use "../util" as *;
 
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
+
 body {
-  background-color: var(--white);
-  color: var(--black);
   font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 300;
+  min-height: 100vh;
+  background-color: var(--first-background-color);
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   @include breakpoint-down(small) {
     max-width: 100%;
+    padding: 0;
   }
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }
 
 .glassmorphism-card {

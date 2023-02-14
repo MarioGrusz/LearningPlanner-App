@@ -33,6 +33,8 @@
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+
+  background-color: var(--first-background-color);
 }
 
 .task-first {
@@ -48,7 +50,7 @@
   height: 20px;
   width: 20px;
   min-width: 20px;
-  border: 1px solid var(--black);
+  border: 1px solid var(--c-grey-900);
   border-radius: 50%;
   margin-right: 30px;
   cursor: pointer;
@@ -72,7 +74,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: var(--black);
+  color: var(--c-grey-900);
   font-size: 1.5rem;
 }
 
@@ -88,7 +90,7 @@
 }
 
 .todo-text {
-  color: var(--black);
+  color: var(--c-grey-900);
   border: none;
   background-color: transparent;
 }

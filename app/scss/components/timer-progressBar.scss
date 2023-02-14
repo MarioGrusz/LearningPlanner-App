@@ -36,10 +36,11 @@
   height: 30px;
   border: none;
   border-radius: 15px;
-  background-color: var(--black);
-  color: white;
+  background-color: var(--c-grey-900);
+  color: var(--fourth-background-color);
   cursor: pointer;
   transition: all 1s ease;
+  font-size: 0.8rem;
 }
 
 .timer__start {
@@ -51,7 +52,7 @@
 }
 
 .timer__btn--start {
-  background-color: var(--black);
+  background-color: var(--c-grey-900);
 }
 
 .timer__btn--stop {
