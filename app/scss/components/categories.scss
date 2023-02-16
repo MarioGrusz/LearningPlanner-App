@@ -27,11 +27,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  //padding: 1rem;
   border-radius: 15px;
   min-height: 15vh;
   height: auto;
-  //transition: all 0.5s ease;
   transition: height 1s ease;
   cursor: pointer;
   touch-action: pan-y;
@@ -47,6 +45,7 @@
     background-color: transparent;
     text-align: center;
     padding-top: 1rem;
+    text-transform: uppercase;
   }
 }
 
@@ -64,12 +63,10 @@
   text-transform: uppercase;
   letter-spacing: 2.5px;
   font-weight: 500;
-  color: var(--black);
-  background-color: transparent;
-  border: 1px solid var(--black);
+  color: var(--c-grey-500);
+  background-color: var(--c-purple-300);
   border-radius: 45px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  //pointer-events: none;
   cursor: pointer;
   width: 100%;
 }
@@ -80,7 +77,7 @@
   margin: 0 0.5rem;
 
   padding: 0 1.5rem;
-  color: var(--black);
+  color: var(--c-grey-900);
   font-size: 1rem;
   border-radius: 45px;
   background: rgba(255, 255, 255, 0.05);
@@ -130,8 +127,7 @@
   padding-left: 1rem;
   padding-right: 1rem;
 
-  //background-color: var(--c-purple-100);
-
+  //glassmorphism
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(16.5px);
@@ -152,7 +148,6 @@
   padding-left: 30px;
   transition: all 0.3s ease;
   background-color: rgba(0, 0, 0, 0.21);
-  //background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(15px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
@@ -174,7 +169,6 @@
 
 .new-task-form {
   width: 100%;
-  //padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -186,10 +180,9 @@
   min-height: 35px;
   width: 50%;
   align-self: center;
-  //padding: 1em 3em;
   font-size: 12px;
-  background-color: var(--blue);
-  color: var(--white);
+  background-color: var(--c-purple-300);
+  color: var(--c-grey-500);
   margin: 1rem 0;
   text-transform: uppercase;
   letter-spacing: 2.5px;

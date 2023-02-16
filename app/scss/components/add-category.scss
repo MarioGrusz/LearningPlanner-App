@@ -46,7 +46,7 @@
   &__title,
   &__title input,
   .your-schedule {
-    color: var(--black);
+    color: var(--c-grey-900);
     font-size: 1.5rem;
     font-weight: 500;
   }
@@ -54,7 +54,6 @@
   &__current-date {
     display: flex;
     justify-content: space-between;
-    //background-color: var(--mint);
     border-radius: 30px;
     padding: 0 0.5rem;
 
