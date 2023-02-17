@@ -16,6 +16,11 @@ let selectedCategoryId = localStorage.getItem('category.selectedCategoryId');
 
 const categoriesCounter = document.querySelector('.category-counter');
 
+const notificationTimeBox = document.querySelector('.notification-time-box ');
+const timeBoxForm = document.querySelector('.time-form');
+const timeBoxValue = document.querySelector('.time-value');
+const timeBoxCloseBtn = document.querySelector('.btn-close-box');
+
 
 
 // ****** FUNCTIONS **********
@@ -122,7 +127,7 @@ const displayCategory = () => {
           <input
             class="task-input"
             type="text"
-            placeholder="Name a new task and enter/click to add..."
+            placeholder="Add task..."
           />
           <input
             class="create-task-btn"
@@ -144,7 +149,6 @@ const displayCategory = () => {
         function showProgressBar(){
           if(category.tasks.length !== 0 && categoryItem.classList.contains('active')){
                 progressBar.style.display = 'block'
-                console.log('progress bar')
             } else {
                 progressBar.style.display = 'none'
             }
@@ -221,12 +225,13 @@ const displayCategory = () => {
 
 
         //UPDATE DONE/UNDONE TAKS RATIO
+
         function updateTasksRatio(thisCategoryId) {
             const selectedCategory = categories.find(category => category.id === thisCategoryId);
             const completeTaskCount = selectedCategory.tasks.filter(task => task.complete).length;
-            let taskRatioNumber = Math.floor((100 * completeTaskCount) / category.tasks.length);
-            category.taskRatio.pop();
-            category.taskRatio.push(taskRatioNumber);
+            let taskRatioNumber = Math.floor((100 * completeTaskCount) / selectedCategory.tasks.length);
+            selectedCategory.taskRatio.pop();
+            selectedCategory.taskRatio.push(taskRatioNumber);
             saveToLocalStorage();
         };
 
@@ -299,6 +304,7 @@ const displayCategory = () => {
                 const countDown = document.createElement('div');
                 countDown.classList.add('timer-container')
                 taskFirst.appendChild(countDown);
+
         
                 tasksWrapper.appendChild(taskElement);
                 
@@ -347,6 +353,7 @@ const displayCategory = () => {
                 //COUNTDOWN TIMER  
                 class Timer {
                     constructor(root) {
+
                         root.innerHTML = Timer.getHTML();
                             
                         this.el = {
@@ -354,13 +361,9 @@ const displayCategory = () => {
                             seconds: root.querySelector('.timer__part--seconds'),
                             control: root.querySelector('.timer__btn--control'),
                             reset: root.querySelector('.timer__btn--reset'),
-                            timeForm: root.querySelector('.time-form'),
-                            timeValue: root.querySelector('.time-value'),
-                            notificationBox: root.querySelector('.notification-time-box'),
-                            closeBoxButton: root.querySelector('.btn-close-box'),
                         };            
                     
-                        this.interval = null;
+                        this.interval = 0;
                         this.remainingSeconds = task.remainingTime;
                     
                         this.start();
@@ -381,62 +384,118 @@ const displayCategory = () => {
                             }
                     
                         });
+
+                        this.currentCategoryId = null;
+                        this.currentTaskId = null; 
+                        
                         
                         this.el.reset.addEventListener('click', (e) => {
+                            notificationTimeBox.style.display = 'flex';
+
+                            this.currentTaskId = e.currentTarget.parentElement.previousSibling.previousSibling.id;
+                            this.currentCategoryId = e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+                             
+
+                            this.updateIds(this.currentCategoryId, this.currentTaskId )
             
-                            //Show Input Box
-                            this.el.notificationBox.style.display = 'flex';
-                            this.el.notificationBox.style.zIndex = "100";
                         });
+
             
             
                         //Close Notification/Put Time Value Box
-                        this.el.closeBoxButton.addEventListener('click', e => {
+                        timeBoxCloseBtn.addEventListener('click', e => {
             
-                            this.el.notificationBox.style.display = 'none';
+                            notificationTimeBox.style.display = 'none';
                         });
             
             
-                        this.el.timeForm.addEventListener('submit' , e => {
+                        timeBoxForm.addEventListener('submit' , e => {
+
                             e.preventDefault();
-                            const inputeMinutes = this.el.timeValue.value;
+                            // Input value and update the IDs
+                            const inputValue = timeBoxValue.value;
+                            this.updateIds(this.currentCategoryId, this.currentTaskId);
 
+                            // Find the selected task and update its remaining time
+                            const selectedTask = findSelectedTask(this.currentCategoryId, this.currentTaskId);
+                            if (selectedTask) {
+
+                                console.log({selectedTask})
+                                updateRemainingTime(selectedTask, inputValue);
+                                checkboxElement.checked = false;
+                                selectedTask.complete = false;
+                                saveToLocalStorage();
+
+                            } else {
+                                return;
+                            }
                             
-                            const thisCategoryId = e.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id;
-                            const thisTaskId = e.currentTarget.parentElement.parentElement.parentElement.parentElement.previousSibling.previousSibling.id;
-            
-                            const selectedCategory = categories.find(category => category.id === thisCategoryId );
-                            const selectedTask = selectedCategory.tasks.find(task => task.id === thisTaskId);
-            
-                            selectedTask.remainingTime.pop();
-                            selectedTask.remainingTime.push(inputeMinutes);
-                            saveToLocalStorage();
-            
-                            this.el.notificationBox.style.display = 'none';
+
+                            // Find the selected task based on the current category and task IDs
+                            function findSelectedTask(categoryId, taskId) {
+                                const selectedCategory = categories.find(category => category.id === categoryId);
+                                if (selectedCategory) {
+                                return selectedCategory.tasks.find(task => task.id === taskId);
+                                } else {
+                                return null;
+                                }
+                            }
+
+                            // Hide the time box and reset the form
+                            hideTimeBox();
                             e.target.reset();
-            
-                            if(inputeMinutes < 60) {
-                            this.stop();
-                            
-                            this.remainingSeconds = selectedTask.remainingTime * 60;
-                            this.updateRemainingTime();
-                            this.updateInterfaceTime();
-                            updateTasksRatio(thisCategoryId);               
-                            };
-            
-                            
-                            checkboxElement.checked = false;
-                            task.complete = false;
-                            saveToLocalStorage();
-                            showTasksCount();
-                            updateTasksRatio(thisCategoryId);  
 
-                            new ProgressBar(progressBar, category.taskRatio); 
+                            // Update the remaining time and task ratio
+                            if (inputValue < 60) {
+                                this.stop()
+                                this.remainingSeconds = selectedTask.remainingTime * 60;
+                                this.updateRemainingTime();
+                                this.updateInterfaceTime();
+                                updateTasksRatio(this.currentCategoryId);
+                            }
+
+                            // Update the task status and save to local storage
+                            updateTaskStatus();
+                            saveToLocalStorage();
+
+                            // Update the task count and progress bar
+                            showTasksCount();
+                            updateTasksRatio(this.currentCategoryId);
+                            new ProgressBar(progressBar, category.taskRatio);
+
+
+                            // Update the remaining time of the selected task
+                            function updateRemainingTime(selectedTask, inputValue) {
+                                selectedTask.remainingTime.pop();
+                                selectedTask.remainingTime.push(inputValue);
+                            }
+
+                            // Hide the time box
+                            function hideTimeBox() {
+                                notificationTimeBox.style.display = 'none';
+                            }
+
+                            const task = findSelectedTask(this.currentCategoryId, this.currentTaskId);
+                            // Update the status of the selected task
+                            function updateTaskStatus() {                               
+                                if (task) {
+                                const checkboxElement = task.element.querySelector('.task-checkbox');
+                                checkboxElement.checked = false;
+                                task.complete = false;
+                                }
+                            }
                         });
         
                     };
+
         
-                    //Functions
+                    //FUNCTIONS
+
+                    // Update ID values outside of the block
+                    updateIds(taskId, categoryId) {
+                        this.currentTaskId = taskId;
+                        this.currentCategoryId = categoryId;    
+                    };
                     updateRemainingTime(){
                         task.remainingTime.pop();
                         task.remainingTime.push(this.remainingSeconds);
@@ -463,37 +522,41 @@ const displayCategory = () => {
                     
                         this.el.minutes.textContent = minutes.toString().padStart(2, '0');
                         this.el.seconds.textContent = seconds.toString().padStart(2, '0');
+
+                        //console.log('Category ID:', this.currentCategoryId);
+                        //console.log('Task ID:', this.currentTaskId);
                     };
                 
                     start(target){
 
                         const thisCategoryId = target;
 
-                        if(this.remainingSeconds === 0 || this.remainingSeconds === []) return
+                        if(this.remainingSeconds === 0 || this.remainingSeconds === []) return;
+
                 
-                            this.interval = setInterval(() =>{
-                
-                                this.remainingSeconds--;
-                                this.updateInterfaceTime();
-                        
-                                if (this.remainingSeconds === 0) {
-                                this.stop();
-                                checkboxElement.checked = true;
-                                task.complete = true;
-                                showTasksCount();
-                                this.updateRemainingTime();
-                                updateTasksRatio(thisCategoryId);
-                                saveToLocalStorage();
-                                new ProgressBar(progressBar, category.taskRatio);
-                                }
-                        
-                            }, 1000);
-                        
-                            this.updateInterfaceControls();
-                            
-                        }
+                        this.interval = setInterval(() =>{
+            
+                            this.remainingSeconds--;
+                            this.updateInterfaceTime();
                     
-                        stop(){
+                            if (this.remainingSeconds === 0) {
+                            this.stop();
+                            checkboxElement.checked = true;
+                            task.complete = true;
+                            showTasksCount();
+                            this.updateRemainingTime();
+                            updateTasksRatio(thisCategoryId);
+                            saveToLocalStorage();
+                            new ProgressBar(progressBar, category.taskRatio);
+                            }
+                    
+                        }, 1000);
+                    
+                        this.updateInterfaceControls();
+                            
+                    }
+                    
+                    stop(){
                         clearInterval(this.interval);
                         this.interval = null;
                         this.updateInterfaceControls();
@@ -502,28 +565,6 @@ const displayCategory = () => {
                 
                     static getHTML(){
                         return `
-                        <div class="notification-time-box glassmorphism-card">
-                            <div class="set-time-box">
-                                <div class="set-time-box__content">
-                                    <h2 class="time-title">Put Time</h2>
-                                    <button class="btn-close-box">
-                                    <i class="fa-solid fa-circle-xmark"></i>
-                                    </button>
-                                </div>
-                
-                                <div class="set-time-box__input-wrapper">
-                                    <form class="time-form">
-                                        <input
-                                            class="time-value"
-                                            id="time-value"
-                                            type="input"
-                                            placeholder="e.g 20 etc"
-                                        />
-                                        <input class="add-value-btn" type="submit" value="Add Time" />
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         <span class="timer__part timer__part--minutes">00</span>
                         <span class="timer__part timer__part--semicolons">:</span>
                         <span class="timer__part timer__part--seconds">00</span>
