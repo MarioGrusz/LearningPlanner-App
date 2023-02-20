@@ -1,10 +1,8 @@
 ## Learning planner 
 
-Application created from scratch by using HTML, SCSS and Vanilla Javascript.
+This is a web-based application developed using HTML, SCSS, and Vanilla JavaScript, designed to aid in the organization of learning activities. The application allows users to create categories such as "Spanish Language" or "Programming," and add tasks to each category, specifying the amount of time they want to allocate to each task, such as "20 minutes for verbs" or "5 minutes for vocabulary."
 
-Simple tool to organise learning activity, you can create category (e.g. spanish language, programming ), add task/s and time you want to spent on every task (e.g. verbs 20 minutes, vocabulary 5 minutes etc.), focus and learn. 
-
-One of the most important reasons you should use this app is that it will help you stay organised.
+The primary benefit of using this application is improved organization, which helps learners stay on track with their studies and achieve their learning goals.
 
 ## Live demo [_here_](https://learning-helper.netlify.app/)
 
